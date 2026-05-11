@@ -16,4 +16,17 @@ venv/
 .pytest_cache/
 .mypy_cache/
 
+# Videos / datasets
 videos/
+backend/data/
+backend/outputs/
+
+# YOLO training outputs
+runs/
+backend/runs/
+
+# Model weights
+*.pt
+
+# Generated augmentation preview
+backend/augmentations.pdf
