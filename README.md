@@ -87,7 +87,7 @@ runs/detect/salamander_run1_gpu/weights/best.pt
 
 ---
 
-## Single Image Inference
+## Single Image Inference (From Root)
 
 Run inference on a single image.
 
@@ -111,7 +111,7 @@ backend/outputs/single_image_test.jpg
 
 ---
 
-## Video Inference
+## Video Inference (From Root)
 
 Run inference on a full video.
 
