@@ -39,9 +39,15 @@ function App() {
           onChange={(e) => setFile(e.target.files[0])}
         />
         <button type="submit" disabled={!file || submitting}>
-          {submitting ? 'Uploading…' : 'Upload'}
+          {submitting ? 'Processing…' : 'Upload'}
         </button>
       </form>
+
+      {submitting && (
+        <p style={{ marginTop: '0.75rem', color: '#555' }}>
+          Running detection on each frame. This usually takes about a minute.
+        </p>
+      )}
 
       {error && <p style={{ color: 'crimson' }}>{error}</p>}
 
