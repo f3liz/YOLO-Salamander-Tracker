@@ -30,7 +30,7 @@ function App() {
   }
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', padding: '0 1rem' }}>
+    <main className="app">
       <h1>Salamander Tracker</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -44,20 +44,35 @@ function App() {
       </form>
 
       {submitting && (
-        <p style={{ marginTop: '0.75rem', color: '#555' }}>
+        <p className="status">
           Running detection on each frame. This usually takes about a minute.
         </p>
       )}
 
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       {data?.video_url && (
-        <video
-          key={data.video_url}
-          src={data.video_url}
-          controls
-          style={{ marginTop: '1rem', width: '100%' }}
-        />
+        <div className="results">
+          <video key={data.video_url} src={data.video_url} controls />
+          <table className="tracks-table">
+            <thead>
+              <tr>
+                <th>Track ID</th>
+                <th>Label</th>
+                <th>Time on screen (s)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.tracks?.map((t) => (
+                <tr key={t.track_id}>
+                  <td>{t.track_id}</td>
+                  <td>{t.label}</td>
+                  <td>{t.time_on_screen_s}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </main>
   )

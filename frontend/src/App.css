@@ -13,3 +13,41 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+.app {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.status {
+  margin-top: 0.75rem;
+  color: #555;
+}
+
+.error {
+  color: crimson;
+}
+
+.results {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: flex-start;
+}
+
+.results video {
+  flex: 1;
+  min-width: 0;
+}
+
+.tracks-table {
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tracks-table th,
+.tracks-table td {
+  border: 1px solid #ccc;
+  padding: 0.25rem 0.5rem;
+}
