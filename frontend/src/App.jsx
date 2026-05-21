@@ -72,6 +72,29 @@ function App() {
               ))}
             </tbody>
           </table>
+          <table className="tracks-table">
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>Dwell Time (s)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {Object.entries(data.region_dwell_times_seconds || {}).map(
+                ([region, time]) => (
+                  <tr key={region}>
+                    <td>
+                      {region
+                        .replace('_', ' ')
+                        .replace(/\b\w/g, (char) => char.toUpperCase())}
+                    </td>
+                    <td>{time}</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
         </div>
       )}
     </main>
