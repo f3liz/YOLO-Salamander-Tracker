@@ -5,6 +5,7 @@ function App() {
   const [file, setFile] = useState(null)
   const [data, setData] = useState(null)
   const [submitting, setSubmitting] = useState(false)
+  const [percent, setPercent] = useState(0)
   const [error, setError] = useState(null)
 
   async function handleSubmit(e) {
@@ -13,6 +14,7 @@ function App() {
     setSubmitting(true)
     setError(null)
     setData(null)
+    setPercent(0)
     try {
       const form = new FormData()
       form.append('video', file)
@@ -21,7 +23,21 @@ function App() {
         body: form,
       })
       if (!res.ok) throw new Error(`Upload failed: ${res.status}`)
-      setData(await res.json())
+
+      while (true) {
+        await new Promise((r) => setTimeout(r, 1500))
+        const pollRes = await fetch('http://localhost:8000/track')
+        if (!pollRes.ok) throw new Error(`Poll failed: ${pollRes.status}`)
+        const job = await pollRes.json()
+        setPercent(job.percent ?? 0)
+        if (job.status === 'done') {
+          setData(job.result)
+          break
+        }
+        if (job.status === 'error') {
+          throw new Error(job.message || 'Processing failed')
+        }
+      }
     } catch (err) {
       setError(err.message)
     } finally {
@@ -44,9 +60,11 @@ function App() {
       </form>
 
       {submitting && (
-        <p className="status">
-          Running detection on each frame. This usually takes about a minute.
-        </p>
+        <div className="status">
+          <p>Running detection on each frame. This usually takes about a minute.</p>
+          <progress value={percent} max={100} />
+          <span className="percent">{percent}%</span>
+        </div>
       )}
 
       {error && <p className="error">{error}</p>}
