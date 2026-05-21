@@ -8,6 +8,8 @@ from fastapi.staticfiles import StaticFiles
 import cv2
 from ultralytics import YOLO
 
+from collections import defaultdict
+
 VIDEOS_DIR = Path(__file__).parent / "videos"
 VIDEOS_DIR.mkdir(exist_ok=True)
 
@@ -48,21 +50,41 @@ def start_track(video: UploadFile = File(...)):
     (width, height),
     )
 
+    frames_seen = defaultdict(int)
+    label_for = {}
+
     for frame_idx in range(total):
         ok, frame = cap.read()
         if not ok:
             break
         result = model.track(frame, persist=True, verbose=False)[0]
         writer.write(result.plot())
+
+        boxes = result.boxes
+        if boxes is not None and boxes.id is not None:
+            for tid, cls_id in zip(boxes.id.tolist(), boxes.cls.tolist()):
+                frames_seen[int(tid)] += 1
+                label_for[int(tid)] = model.names[int(cls_id)]
+
         if frame_idx % 30 == 0:
             print(f"frame {frame_idx}/{total}")
 
     cap.release()
     writer.release()
 
+    tracks = [
+        {
+            "track_id": tid,
+            "time_on_screen_s": round(count / fps, 2),
+            "label": label_for[tid],
+        }
+        for tid, count in frames_seen.items()
+    ]
+
     return {
     "status": "done",
     "video_url": f"http://localhost:8000/videos/output.mp4?t={int(time.time())}",
+    "tracks": tracks,
     }
 
 if __name__ == "__main__":
