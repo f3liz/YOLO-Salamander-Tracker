@@ -54,47 +54,48 @@ function App() {
       {data?.video_url && (
         <div className="results">
           <video key={data.video_url} src={data.video_url} controls />
-          <table className="tracks-table">
-            <thead>
-              <tr>
-                <th>Track ID</th>
-                <th>Label</th>
-                <th>Time on screen (s)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.tracks?.map((t) => (
-                <tr key={t.track_id}>
-                  <td>{t.track_id}</td>
-                  <td>{t.label}</td>
-                  <td>{t.time_on_screen_s}</td>
+          <div className="tables">
+            <table className="tracks-table">
+              <thead>
+                <tr>
+                  <th>Track ID</th>
+                  <th>Label</th>
+                  <th>Time on screen (s)</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <table className="tracks-table">
-            <thead>
-              <tr>
-                <th>Region</th>
-                <th>Dwell Time (s)</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {Object.entries(data.region_dwell_times_seconds || {}).map(
-                ([region, time]) => (
-                  <tr key={region}>
-                    <td>
-                      {region
-                        .replace('_', ' ')
-                        .replace(/\b\w/g, (char) => char.toUpperCase())}
-                    </td>
-                    <td>{time}</td>
+              </thead>
+              <tbody>
+                {data.tracks?.map((t) => (
+                  <tr key={t.track_id}>
+                    <td>{t.track_id}</td>
+                    <td>{t.label}</td>
+                    <td>{t.time_on_screen_s}</td>
                   </tr>
-                )
-              )}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
+            <table className="tracks-table">
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Dwell Time (s)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(data.region_dwell_times_seconds || {}).map(
+                  ([region, time]) => (
+                    <tr key={region}>
+                      <td>
+                        {region
+                          .replace('_', ' ')
+                          .replace(/\b\w/g, (char) => char.toUpperCase())}
+                      </td>
+                      <td>{time}</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </main>
