@@ -147,3 +147,9 @@ backend/outputs/
 ```
 
 Share the trained model (`best.pt`) separately with teammates if needed.
+
+## Reflection
+
+One thing we noticed while testing was that YOLO worked much better than color masking in uncontrolled environments. In videos with background noise such as similar colors to the salamander, shadows, or textured environments, YOLO was still able to detect and track the salamander pretty well. A color masking approach would've probably struggled more in these situations since it relies heavily on matching color ranges, which could cause parts of the background to get detected if the colors were too similar to the salamander. However, color masking would still be a good option in a more controlled environment with consistent lighting and cleaner backgrounds.
+
+If given more time, we would've like to try to implement a path trail. It was something we experimented with early on but the line drawn for the path trail wasn't the best. We would ideally find the best way to track the center mass of the salamander and then have lines drawn to follow that center mass over time.
